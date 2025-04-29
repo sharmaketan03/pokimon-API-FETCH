@@ -65,31 +65,42 @@ getfecthing(pokimondata)
 function getfecthing(obj){
       results.innerHTML=" "
   obj.forEach((element)=>{
-    // console.log(element)
+    console.log(element)
     let divmain=document.createElement("div")
     divmain.classList.add("flip-card")
+
     divmain.innerHTML=`
-   
-  <div class="flip-card-inner">
+    
+    <div class="flip-card-inner">
     <div class="flip-card-front">
       <img src="${element.sprites.other.dream_world.front_default}" alt="Avatar" >
       <p class="name">Name:   ${element.name}</p>
-    <p class="type">type:  ${element.types[0].type.name}  </p>
+       <p class="name">Type: ${element.types.map(t => t.type.name).join(", ")}</p>
+
     </div>
     <div class="flip-card-back">
-      <p>height: ${element.height}</p>
-     <p>Weight: ${element.weight}</p>
-     <p>hp : ${element.stats[0].base_stat}</p>
-     <p>attack: ${element.stats[1].base_stat}</p>
+    <p>height: ${element.height}</p>
+    <p>Weight: ${element.weight}</p>
+    <p>hp : ${element.stats[0].base_stat}</p>
+    <p>attack: ${element.stats[1].base_stat}</p>
      <p>defence: ${element.stats[2].base_stat}</p>
      <p>special_attack: ${element.stats[3].base_stat}</p>
      <p>special_defence: ${element.stats[4].base_stat}</p>
      <p>speed: ${element.stats[5].base_stat}</p>
     </div>
-  </div>
+  </div>`    
+// const flipFront=document.querySelector(".flip-card-front")
+// const para=document.createElement("p")
 
+// element.types.forEach(item=>{
+//   console.log(item.type.name);
+//   para.innerHTML=item.type.name
+//   console.log(para);
+//   results.append(para)
+  
+  
+// })
 
-`    
 
 results.append(divmain)
   })
@@ -105,10 +116,17 @@ results.append(divmain)
    
 }
 input.addEventListener("input",(e)=>{
- let searchvariable=e.target.value
+ let searchvariable=e.target.value.toLowerCase()
+ 
  let value=pokimondata.filter((obj)=>{
-    return obj.name.includes(searchvariable)
- })
+  if(obj.name.toLowerCase().includes(searchvariable)){
+    return obj.name.toLowerCase().includes(searchvariable)
+  }
+  else{
+     
+  }
+  
+})
 //  console.log(value)
  getfecthing(value)
 })
@@ -116,19 +134,29 @@ input.addEventListener("input",(e)=>{
  select.addEventListener("change",(e)=>{
        selectarr=[]
        let searching=e.target.value
- pokimondata.forEach((element,index)=>{
-          element.types.forEach((obj)=>{
-              if(obj.type.name===searching){
-                  // console.log("milgya")
-                  selectarr.push(element)
-                 
+      console.log(searching)
+  let reverse=document.querySelector("#reverse")
 
-                  
-              }
-          })
-          console.log(selectarr)
-       })
-       getfecthing(selectarr)
+  if(searching===reverse.value){
+  
+    getfecthing(pokimondata)
+  }
+  else{
+    pokimondata.forEach((element,index)=>{
+      element.types.forEach((obj)=>{
+          if(obj.type.name===searching){
+              // console.log("milgya")
+              selectarr.push(element)
+             
+
+              
+          }
+      })
+      console.log(selectarr)
+   })
+   getfecthing(selectarr)
+  }
+
  })
 
 

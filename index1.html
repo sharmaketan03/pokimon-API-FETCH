@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+    <script>
+        function fetchDataSequentially(items, callback, index = 0) {
+  if (index >= items.length) return;
+
+  setTimeout(() => {
+    // console.log(items[index])
+    // callback(items[index]);
+    fetchDataSequentially(items, callback, index + 1);
+  }, 500); // fixed delay for clarity
+}
+
+fetchDataSequentially([1, 2, 3, 4, 5], item => {
+  console.log(`Fetched data for item: ${item}`);
+});
+
+    </script>
+</body>
+</html>
+
+all types
+load more button -fixed
+two types:
