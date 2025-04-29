@@ -9,7 +9,8 @@ let input=document.querySelector("input")
   let offsetvalue=20
 let limitvalue=0
 
-
+let pokimondata=[]
+let selectarr=[]
 
 button.addEventListener("click",()=>{
   fetchpokimon()
@@ -18,109 +19,117 @@ button.addEventListener("click",()=>{
 
 async function fetchpokimon(){
     let response=await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limitvalue}&offset=${offsetvalue}`)
-    console.log(response)
+    // console.log(response)
     let result=await response.json()
     // console.log(result.results)
     getdata(result.results)
     offsetvalue=offsetvalue+20
 }
+
+type()
+async function type(){
+      let types=await fetch(" https://pokeapi.co/api/v2/type/?limit=21")
+      let typesresponse=await types.json()
+      // console.log(typesresponse.results)
+      pokimontypes(typesresponse.results)
+}
+function pokimontypes(arr){
+     arr.forEach((obj)=>{
+         let option=document.createElement("option")
+         option.value=obj.name
+         option.innerText=obj.name
+         select.append(option)
+     })
+}
+
 fetchpokimon()
 
 
 async function getdata(arr){
-   console.log(arr)
+  //  console.log(arr)
   for(let x of arr){
     let fetcheing=await fetch(x.url)
     let resutlfetch=await fetcheing.json()
-    console.log(resutlfetch)
-    getfecthing(resutlfetch)
-  }
-}
-function getfecthing(arr){
-    // console.log(arr)
+    pokimondata.push(resutlfetch)
+// pokimondata.push(resutlfetch)
+// console.log(pokimondata)
 
+}
+// console.log(pokimondata)
+getfecthing(pokimondata)
+}
+// console.log(pokimondata)
+
+
+
+function getfecthing(obj){
+      results.innerHTML=" "
+  obj.forEach((element)=>{
+    // console.log(element)
     let divmain=document.createElement("div")
     divmain.classList.add("flip-card")
     divmain.innerHTML=`
    
   <div class="flip-card-inner">
     <div class="flip-card-front">
-      <img src="${arr.sprites.other.dream_world.front_default}" alt="Avatar" >
-      <p class="name">Name:   ${arr.name}</p>
-    <p class="type">type:  ${arr.types[0].type.name}  </p>
+      <img src="${element.sprites.other.dream_world.front_default}" alt="Avatar" >
+      <p class="name">Name:   ${element.name}</p>
+    <p class="type">type:  ${element.types[0].type.name}  </p>
     </div>
     <div class="flip-card-back">
-      <p>height: ${arr.height}</p>
-     <p>Weight: ${arr.weight}</p>
-     <p>hp : ${arr.stats[0].base_stat}</p>
-     <p>attack: ${arr.stats[1].base_stat}</p>
-     <p>defence: ${arr.stats[2].base_stat}</p>
-     <p>special_attack: ${arr.stats[3].base_stat}</p>
-     <p>special_defence: ${arr.stats[4].base_stat}</p>
-     <p>speed: ${arr.stats[5].base_stat}</p>
+      <p>height: ${element.height}</p>
+     <p>Weight: ${element.weight}</p>
+     <p>hp : ${element.stats[0].base_stat}</p>
+     <p>attack: ${element.stats[1].base_stat}</p>
+     <p>defence: ${element.stats[2].base_stat}</p>
+     <p>special_attack: ${element.stats[3].base_stat}</p>
+     <p>special_defence: ${element.stats[4].base_stat}</p>
+     <p>speed: ${element.stats[5].base_stat}</p>
     </div>
   </div>
 
-    `
+
+`    
+
+results.append(divmain)
+  })
+    
+  
+  
+    
     // console.log(arr.types[0].type.name);
-    
-
-let div=document.createElement("option")
-  div.innerHTML=arr.types[0].type.name
-  select.append(div)
-    
   
-  
-    results.append(divmain)
+   
+   
    
    
 }
+input.addEventListener("input",(e)=>{
+ let searchvariable=e.target.value
+ let value=pokimondata.filter((obj)=>{
+    return obj.name.includes(searchvariable)
+ })
+//  console.log(value)
+ getfecthing(value)
+})
 
- 
+ select.addEventListener("change",(e)=>{
+       selectarr=[]
+       let searching=e.target.value
+ pokimondata.forEach((element,index)=>{
+          element.types.forEach((obj)=>{
+              if(obj.type.name===searching){
+                  // console.log("milgya")
+                  selectarr.push(element)
+                 
 
-
-
-
-inputfunc()
-function inputfunc(){
- 
-input.addEventListener("input",()=>{
- 
-  let para=document.querySelectorAll(".name")
-  let input=document.querySelector("input")
-  let type=document.querySelector(".type")
-    para.forEach((element,index)=>{
-      console.log(select.value)
-      if("Name"+":"+"   "+input.value===para[index].innerHTML){
-         
-
-          let div=document.querySelectorAll(".flip-card")
-          results.style .display="none"
-          button.style.display="none"
-          let searchresult=document.querySelector("#searchresult")
-          searchresult.innerHTML=div[index].innerHTML
-    console.log(div)
-      
-      }
-
-    })
-
-    
-    
-// })
-
-
-  
-  //  console.log(para)
-}
-)}
-
-
-
-       
-    
-
-
+                  
+              }
+          })
+          console.log(selectarr)
+       })
+       getfecthing(selectarr)
+ })
 
 
 

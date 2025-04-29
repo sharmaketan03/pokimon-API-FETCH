@@ -99,3 +99,15 @@ body{
   .flip-card-back p{
     margin:0.5rem 0;
   }
+
+  /* #loader{
+    width:300px;
+    height:300px;
+    border-radius: 50%;
+    border:1px solid black;
+
+  } */
+
+  #loader{
+    font-size:40px;
+  }
